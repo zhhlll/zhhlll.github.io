@@ -35,7 +35,7 @@
       line-height: 1.6;
     }
 
-    /* ===== 苦力怕背景 ===== */
+    /* 苦力怕背景 */
     #creeper-bg {
       position: fixed;
       top: 0;
@@ -43,16 +43,14 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-      /* 使用高清苦力怕正面图（来自可靠CDN） */
-      background-image: url('https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/refs/heads/master/assets/minecraft/textures/entity/creeper/creeper.png');
-      background-size: 300px; /* 控制图案大小 */
+      background-image: url('https://cn.bing.com/images/search?q=&view=detailv2&id=2632CB3782542D29AFDBD6090DD4FC9E9609E7F5&ccid=2ayXFURc&iss=fav&FORM=SVIM01&idpview=singleimage&mediaurl=https%253a%252f%252fc-ssl.dtstatic.com%252fuploads%252fitem%252f202004%252f15%252f20200415102943_qnyht.thumb.400_0.webp&expw=400&exph=867&thid=OIP.2ayXFURcc9bOThXLmJj7uAAAAA&idpbck=1');
+      background-size: 300px;
       background-repeat: repeat;
       background-position: center;
-      opacity: 0.07; /* 降低透明度，避免喧宾夺主 */
-      filter: blur(1.5px); /* 轻微模糊，提升层次感 */
+      opacity: 0.07;
+      filter: blur(1.5px);
     }
 
-    /* ===== 装饰元素（保留MC方块，可选）===== */
     .cube {
       position: absolute;
       width: 20px;
@@ -69,14 +67,12 @@
       50% { transform: rotateX(45deg) rotateY(45deg) translate(-10px, -15px); }
     }
 
-    /* ===== 主容器 ===== */
     .container {
       max-width: 700px;
       margin: 20px auto;
       padding: 0 15px;
     }
 
-    /* ===== Hero 区 ===== */
     .hero {
       text-align: center;
       padding: 25px 0;
@@ -112,7 +108,6 @@
       box-shadow: 0 6px 20px rgba(0, 176, 255, 0.6);
     }
 
-    /* ===== 卡片容器 ===== */
     .card {
       background: var(--bg-card);
       backdrop-filter: blur(10px);
@@ -123,7 +118,6 @@
       margin-bottom: 25px;
     }
 
-    /* ===== 选项卡 ===== */
     .tab-header {
       display: flex;
       background: rgba(0, 30, 60, 0.7);
@@ -163,7 +157,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ===== 信息区块 ===== */
     .info-block {
       background: rgba(0, 30, 60, 0.6);
       border: 1px solid var(--primary);
@@ -192,7 +185,6 @@
       gap: 5px;
     }
 
-    /* ===== 特色模块 ===== */
     .features {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -208,7 +200,6 @@
     }
     .feature-icon { font-size: 1.4em; margin-bottom: 5px; }
 
-    /* ===== 公告样式（新增）===== */
     .announcement {
       background: rgba(0, 30, 60, 0.5);
       border-left: 4px solid var(--primary);
@@ -232,7 +223,6 @@
       color: #e0f7fa;
     }
 
-    /* ===== Dynmap ===== */
     .dynmap-container {
       width: 100%;
       height: 380px;
@@ -256,7 +246,6 @@
       color: #888;
     }
 
-    /* ===== 列表 ===== */
     .rules-list, .download-list {
       text-align: left;
       padding-left: 20px;
@@ -267,14 +256,12 @@
       line-height: 1.5;
     }
 
-    /* ===== 加载状态 ===== */
     .loading-state {
       text-align: center;
       color: #888;
       padding: 20px;
     }
 
-    /* ===== 页脚 ===== */
     footer {
       text-align: center;
       padding: 20px;
@@ -282,7 +269,6 @@
       font-size: 0.9em;
     }
 
-    /* ===== 响应式 ===== */
     @media (max-width: 600px) {
       .hero h1 { font-size: 2.0em; }
       .tab-btn { padding: 12px 8px; font-size: 1em; }
@@ -293,26 +279,84 @@
         opacity: 0.05;
       }
     }
+
+    /* ===== 超轻量评论区样式 ===== */
+    #simple-comments {
+      padding: 20px;
+    }
+    #comments-list {
+      margin-bottom: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .comment-item {
+      padding: 12px;
+      background: rgba(0, 30, 60, 0.6);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      border-left: 3px solid var(--primary);
+    }
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.95em;
+      color: #4fc3f7;
+      margin-bottom: 6px;
+    }
+    .comment-content {
+      color: #e0f7fa;
+      line-height: 1.5;
+    }
+    .comment-form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .comment-input {
+      flex: 1;
+      min-width: 120px;
+      padding: 10px;
+      background: rgba(0, 30, 60, 0.7);
+      border: 1px solid var(--primary);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: "Minecraft", monospace;
+    }
+    .comment-btn {
+      padding: 10px 20px;
+      background: var(--primary);
+      color: #001f3f;
+      border: none;
+      border-radius: 6px;
+      font-family: "Minecraft", monospace;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .comment-btn:hover {
+      background: #4fc3f7;
+    }
+    .comment-error {
+      color: #ff8a80;
+      margin-top: 10px;
+      text-align: center;
+      font-size: 0.95em;
+    }
   </style>
 </head>
 <body>
-  <!-- 苦力怕背景 -->
   <div id="creeper-bg"></div>
-  
-  <!-- 保留MC方块装饰（可选，不喜欢可删除下面3行） -->
   <div class="cube cube1"></div>
   <div class="cube cube2"></div>
   <div class="cube cube3"></div>
 
   <div class="container">
-    <!-- Hero 区 -->
     <div class="hero">
       <h1>⛏️ SIMPFUN SERVER</h1>
       <p>1.20.1 Forge | 生存 + 创造 | 领地保护 | 友好社区</p>
       <button class="join-btn" onclick="copyAddress()">📋 复制服务器地址</button>
     </div>
 
-    <!-- 主卡片 -->
     <div class="card">
       <div class="tab-header">
         <button class="tab-btn active" onclick="openTab('home')">🏠 首页</button>
@@ -323,16 +367,13 @@
         <button class="tab-btn" onclick="openTab('download')">⬇️ 下载</button>
       </div>
 
-      <!-- 首页 -->
       <div id="home" class="tab-content active">
         <div class="info-block server-address">play.simpfun.cn:23851</div>
         <div class="info-block version-info">🧱 VERSION: 1.20.1 (FORGE)</div>
-        
         <div class="info-block status">
           👥 PLAYERS: <span id="players">LOADING...</span><br>
           🕒 STATUS: <span id="status">CHECKING...</span>
         </div>
-
         <div class="contact-item">
           💬 <a href="https://discord.gg/YOUR_INVITE" target="_blank" class="contact-link">Discord</a>
         </div>
@@ -341,14 +382,12 @@
         </div>
       </div>
 
-      <!-- 公告（新增） -->
       <div id="news" class="tab-content">
         <div id="announcements-list">
           <div class="loading-state">加载公告中...</div>
         </div>
       </div>
 
-      <!-- 特色 -->
       <div id="features" class="tab-content">
         <div class="features">
           <div class="feature"><div class="feature-icon">🛡️</div>领地保护</div>
@@ -363,7 +402,6 @@
         </p>
       </div>
 
-      <!-- 规则 -->
       <div id="rules" class="tab-content">
         <ul class="rules-list">
           <li>✅ 必须使用 <strong>Forge 1.20.1</strong> 客户端</li>
@@ -375,7 +413,6 @@
         </ul>
       </div>
 
-      <!-- 地图 -->
       <div id="map" class="tab-content">
         <p style="color:#bb86fc; margin-bottom:10px;">探索我们的世界！</p>
         <div class="dynmap-container">
@@ -385,7 +422,6 @@
         <p style="font-size:0.85em; color:#888;">提示：首次加载可能需要 10-20 秒</p>
       </div>
 
-      <!-- 下载 -->
       <div id="download" class="tab-content">
         <ol class="download-list">
           <li>安装 <a href="https://adoptium.net/temurin/releases/?version=17" target="_blank">Java 17</a></li>
@@ -400,40 +436,50 @@
       </div>
     </div>
 
+    <!-- ===== 超轻量评论区（替换 Waline）===== -->
+    <div class="card" style="margin-top: 25px;">
+      <div id="simple-comments">
+        <h3 style="text-align:center; margin-bottom:15px; color:#bbdefb;">💬 服务器反馈 & 玩家交流</h3>
+        <div id="comments-list"></div>
+
+        <div class="comment-form">
+          <input type="text" id="comment-nick" class="comment-input" placeholder="昵称（必填）">
+          <input type="text" id="comment-content" class="comment-input" placeholder="说点什么吧～（支持 Minecraft 表情！）">
+          <button class="comment-btn" onclick="postComment()">发送</button>
+        </div>
+        <div id="comment-error" class="comment-error"></div>
+      </div>
+    </div>
+
     <footer>
       © 2026 SimpFun Minecraft Server | Made with ❤️ for the community
     </footer>
   </div>
 
   <script>
-    // ===== 选项卡 =====
+    // ========== 原有 JS 功能（保持不变）==========
     function openTab(tabName) {
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.getElementById(tabName).classList.add('active');
       event.target.classList.add('active');
 
-      // 如果切换到公告页，加载公告
       if (tabName === 'news' && !window.announcementsLoaded) {
         loadAnnouncements();
       }
     }
 
-    // ===== 加载公告 =====
     async function loadAnnouncements() {
       const container = document.getElementById('announcements-list');
       try {
-        const response = await fetch('announcements.json?_=' + Date.now()); // 防缓存
+        const response = await fetch('announcements.json?_=' + Date.now());
         if (!response.ok) throw new Error('未找到公告文件');
         const announcements = await response.json();
         if (!Array.isArray(announcements) || announcements.length === 0) {
           container.innerHTML = '<div class="loading-state">暂无公告</div>';
           return;
         }
-
-        // 按日期倒序（最新在前）
         announcements.sort((a, b) => new Date(b.date) - new Date(a.date));
-
         let html = '';
         announcements.forEach(item => {
           html += `
@@ -454,7 +500,6 @@
       }
     }
 
-    // 格式化日期：2026-02-05 → 2026年2月5日
     function formatDate(dateStr) {
       const date = new Date(dateStr);
       const year = date.getFullYear();
@@ -463,7 +508,6 @@
       return `${year}年${month}月${day}日`;
     }
 
-    // ===== 复制地址 =====
     function copyAddress() {
       navigator.clipboard.writeText('play.simpfun.cn:23851').then(() => {
         const btn = document.querySelector('.join-btn');
@@ -473,7 +517,6 @@
       });
     }
 
-    // ===== 服务器状态 =====
     async function updateStatus() {
       try {
         const res = await fetch('https://api.mcsrvstat.us/3/play.simpfun.cn:23851');
@@ -494,6 +537,69 @@
     }
     updateStatus();
     setInterval(updateStatus, 30000);
+
+    // ========== 超轻量评论系统 JS ==========
+    const API_BASE = 'http://play.simpfun.cn:8080'; // ←←← 请确保此地址正确！
+
+    async function loadComments() {
+      try {
+        const res = await fetch(`${API_BASE}/api/comments`);
+        if (!res.ok) throw new Error('加载失败');
+        const comments = await res.json();
+        const listEl = document.getElementById('comments-list');
+        listEl.innerHTML = comments.map(c => `
+          <div class="comment-item">
+            <div class="comment-header">
+              <strong>${c.nick}</strong>
+              <span>${new Date(c.time).toLocaleString('zh-CN')}</span>
+            </div>
+            <div class="comment-content">${c.content}</div>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error('加载评论失败:', e);
+        document.getElementById('comments-list').innerHTML = '<div style="text-align:center;color:#ff8a80;">暂无评论或加载失败</div>';
+      }
+    }
+
+    async function postComment() {
+      const nick = document.getElementById('comment-nick').value.trim();
+      const content = document.getElementById('comment-content').value.trim();
+      const errorEl = document.getElementById('comment-error');
+      errorEl.textContent = '';
+
+      if (!nick || !content) {
+        errorEl.textContent = '⚠️ 昵称和内容不能为空！';
+        return;
+      }
+      if (nick.length > 20 || content.length > 200) {
+        errorEl.textContent = '⚠️ 昵称不超过20字，内容不超过200字！';
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/api/comment`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nick, content })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          document.getElementById('comment-nick').value = '';
+          document.getElementById('comment-content').value = '';
+          loadComments(); // 刷新
+        } else {
+          errorEl.textContent = `⚠️ ${data.error || '发送失败'}`;
+        }
+      } catch (e) {
+        errorEl.textContent = '⚠️ 网络错误，请检查服务器是否运行！';
+        console.error(e);
+      }
+    }
+
+    // 页面加载时获取评论
+    loadComments();
   </script>
 </body>
 </html>
+
