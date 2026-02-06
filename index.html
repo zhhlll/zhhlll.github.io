@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="SimpFun Minecraft 服务器 - 1.20.1 Forge 生存+创造混合服，支持领地保护，友好社区，欢迎加入！">
+  <meta name="keywords" content="Minecraft, 服务器, Forge, 1.20.1, 生存, 创造, 领地, 中文服">
+  <title>SimpFun Minecraft 服务器 | 生存 · 创造 · 社区</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛏️</text></svg>">
+  <style>
+    /* ===== 全局重置 & 字体 ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    @font-face {
+      font-family: 'Minecraft';
+      src: url('https://cdn.jsdelivr.net/gh/Andrew69/Minecraft-Font@master/Minecraft.woff2') format('woff2');
+    }
+    :root {
+      --primary: #00b0ff;
+      --primary-dark: #0069c0;
+      --bg-card: rgba(13, 19, 33, 0.85);
+      --bg-body: #0c0c16;
+      --text: #e0f7fa;
+    }
+    body {
+      font-family: "Minecraft", "Microsoft YaHei", monospace;
+      background: var(--bg-body);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    /* ===== 苦力怕背景 ===== */
+    #creeper-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      /* 使用高清苦力怕正面图（来自可靠CDN） */
+      background-image: url('https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/refs/heads/master/assets/minecraft/textures/entity/creeper/creeper.png');
+      background-size: 300px; /* 控制图案大小 */
+      background-repeat: repeat;
+      background-position: center;
+      opacity: 0.07; /* 降低透明度，避免喧宾夺主 */
+      filter: blur(1.5px); /* 轻微模糊，提升层次感 */
+    }
+
+    /* ===== 装饰元素（保留MC方块，可选）===== */
+    .cube {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      transform: rotateX(45deg) rotateY(45deg);
+      opacity: 0.7;
+      z-index: -1;
+    }
+    .cube.cube1 { top: 20px; right: 30px; background: #ff9800; animation: float 8s infinite ease-in-out; }
+    .cube.cube2 { bottom: 40px; left: 20px; background: #2196f3; animation: float 10s infinite ease-in-out reverse; }
+    .cube.cube3 { top: 60%; left: 10%; background: #f44336; animation: float 12s infinite ease-in-out; }
+    @keyframes float {
+      0%, 100% { transform: rotateX(45deg) rotateY(45deg) translate(0, 0); }
+      50% { transform: rotateX(45deg) rotateY(45deg) translate(-10px, -15px); }
+    }
+
+    /* ===== 主容器 ===== */
+    .container {
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    /* ===== Hero 区 ===== */
+    .hero {
+      text-align: center;
+      padding: 25px 0;
+    }
+    .hero h1 {
+      font-size: 2.4em;
+      color: #4dff91;
+      text-shadow: 0 0 12px rgba(77, 255, 145, 0.7);
+      margin-bottom: 15px;
+      letter-spacing: 2px;
+    }
+    .hero p {
+      color: #bbdefb;
+      margin-bottom: 20px;
+      font-size: 1.1em;
+    }
+    .join-btn {
+      background: var(--primary);
+      color: #001f3f;
+      border: none;
+      padding: 12px 30px;
+      font-family: inherit;
+      font-size: 1.2em;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 176, 255, 0.4);
+    }
+    .join-btn:hover {
+      background: #4fc3f7;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 176, 255, 0.6);
+    }
+
+    /* ===== 卡片容器 ===== */
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      border: 2px solid var(--primary);
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(0, 176, 255, 0.4);
+      overflow: hidden;
+      margin-bottom: 25px;
+    }
+
+    /* ===== 选项卡 ===== */
+    .tab-header {
+      display: flex;
+      background: rgba(0, 30, 60, 0.7);
+      border-bottom: 2px solid var(--primary);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      background: transparent;
+      color: #bbdefb;
+      font-family: inherit;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .tab-btn:hover {
+      background: rgba(0, 100, 200, 0.3);
+      color: white;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #001f3f;
+      box-shadow: inset 0 -3px 0 var(--primary-dark);
+    }
+
+    .tab-content {
+      display: none;
+      padding: 25px;
+    }
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== 信息区块 ===== */
+    .info-block {
+      background: rgba(0, 30, 60, 0.6);
+      border: 1px solid var(--primary);
+      border-radius: 10px;
+      padding: 12px;
+      margin: 15px 0;
+      font-family: monospace;
+      font-size: 1.1em;
+    }
+    .server-address { color: #4fc3f7; font-weight: bold; }
+    .version-info { color: #ffcc80; }
+    .status { color: #a5d6a7; }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .contact-link {
+      color: #ffab91;
+      text-decoration: none;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ===== 特色模块 ===== */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .feature {
+      background: rgba(0, 30, 60, 0.5);
+      border-radius: 8px;
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 0.95em;
+    }
+    .feature-icon { font-size: 1.4em; margin-bottom: 5px; }
+
+    /* ===== 公告样式（新增）===== */
+    .announcement {
+      background: rgba(0, 30, 60, 0.5);
+      border-left: 4px solid var(--primary);
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 0 8px 8px 0;
+    }
+    .announcement-title {
+      color: #4fc3f7;
+      font-size: 1.2em;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .announcement-date {
+      color: #888;
+      font-size: 0.9em;
+    }
+    .announcement-content {
+      line-height: 1.6;
+      color: #e0f7fa;
+    }
+
+    /* ===== Dynmap ===== */
+    .dynmap-container {
+      width: 100%;
+      height: 380px;
+      border: 2px solid var(--primary);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 15px 0;
+      background: #000;
+      position: relative;
+    }
+    .dynmap-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #888;
+    }
+
+    /* ===== 列表 ===== */
+    .rules-list, .download-list {
+      text-align: left;
+      padding-left: 20px;
+      margin: 15px 0;
+    }
+    .rules-list li, .download-list li {
+      margin: 8px 0;
+      line-height: 1.5;
+    }
+
+    /* ===== 加载状态 ===== */
+    .loading-state {
+      text-align: center;
+      color: #888;
+      padding: 20px;
+    }
+
+    /* ===== 页脚 ===== */
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #888;
+      font-size: 0.9em;
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.0em; }
+      .tab-btn { padding: 12px 8px; font-size: 1em; }
+      .dynmap-container { height: 300px; }
+      .features { grid-template-columns: repeat(2, 1fr); }
+      #creeper-bg {
+        background-size: 200px;
+        opacity: 0.05;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 苦力怕背景 -->
+  <div id="creeper-bg"></div>
+  
+  <!-- 保留MC方块装饰（可选，不喜欢可删除下面3行） -->
+  <div class="cube cube1"></div>
+  <div class="cube cube2"></div>
+  <div class="cube cube3"></div>
+
+  <div class="container">
+    <!-- Hero 区 -->
+    <div class="hero">
+      <h1>⛏️ SIMPFUN SERVER</h1>
+      <p>1.20.1 Forge | 生存 + 创造 | 领地保护 | 友好社区</p>
+      <button class="join-btn" onclick="copyAddress()">📋 复制服务器地址</button>
+    </div>
+
+    <!-- 主卡片 -->
+    <div class="card">
+      <div class="tab-header">
+        <button class="tab-btn active" onclick="openTab('home')">🏠 首页</button>
+        <button class="tab-btn" onclick="openTab('news')">📢 公告</button>
+        <button class="tab-btn" onclick="openTab('features')">✨ 特色</button>
+        <button class="tab-btn" onclick="openTab('rules')">📜 规则</button>
+        <button class="tab-btn" onclick="openTab('map')">🗺️ 地图</button>
+        <button class="tab-btn" onclick="openTab('download')">⬇️ 下载</button>
+      </div>
+
+      <!-- 首页 -->
+      <div id="home" class="tab-content active">
+        <div class="info-block server-address">play.simpfun.cn:23851</div>
+        <div class="info-block version-info">🧱 VERSION: 1.20.1 (FORGE)</div>
+        
+        <div class="info-block status">
+          👥 PLAYERS: <span id="players">LOADING...</span><br>
+          🕒 STATUS: <span id="status">CHECKING...</span>
+        </div>
+
+        <div class="contact-item">
+          💬 <a href="https://discord.gg/YOUR_INVITE" target="_blank" class="contact-link">Discord</a>
+        </div>
+        <div class="contact-item">
+          📱 <span class="contact-link">微信: zhonghh1116</span>
+        </div>
+      </div>
+
+      <!-- 公告（新增） -->
+      <div id="news" class="tab-content">
+        <div id="announcements-list">
+          <div class="loading-state">加载公告中...</div>
+        </div>
+      </div>
+
+      <!-- 特色 -->
+      <div id="features" class="tab-content">
+        <div class="features">
+          <div class="feature"><div class="feature-icon">🛡️</div>领地保护</div>
+          <div class="feature"><div class="feature-icon">🌍</div>生存+创造</div>
+          <div class="feature"><div class="feature-icon">⚡</div>流畅体验</div>
+          <div class="feature"><div class="feature-icon">👥</div>友好社区</div>
+          <div class="feature"><div class="feature-icon">🛠️</div>定期更新</div>
+          <div class="feature"><div class="feature-icon">🎁</div>活动奖励</div>
+        </div>
+        <p style="margin-top:20px; color:#bbdefb;">
+          我们致力于打造一个公平、有趣、稳定的 Minecraft 世界！
+        </p>
+      </div>
+
+      <!-- 规则 -->
+      <div id="rules" class="tab-content">
+        <ul class="rules-list">
+          <li>✅ 必须使用 <strong>Forge 1.20.1</strong> 客户端</li>
+          <li>🚫 禁止 grief（恶意破坏他人建筑）</li>
+          <li>🚫 禁止外挂、作弊、刷物品</li>
+          <li>💬 聊天请文明，禁止广告/刷屏</li>
+          <li>🔒 领地内可自由建造，公共区域请合作</li>
+          <li>❓ 遇到问题先联系管理员</li>
+        </ul>
+      </div>
+
+      <!-- 地图 -->
+      <div id="map" class="tab-content">
+        <p style="color:#bb86fc; margin-bottom:10px;">探索我们的世界！</p>
+        <div class="dynmap-container">
+          <iframe src="http://play.simpfun.cn:8123" title="SimpFun Server Map" loading="lazy"></iframe>
+          <div class="loading">地图加载中...</div>
+        </div>
+        <p style="font-size:0.85em; color:#888;">提示：首次加载可能需要 10-20 秒</p>
+      </div>
+
+      <!-- 下载 -->
+      <div id="download" class="tab-content">
+        <ol class="download-list">
+          <li>安装 <a href="https://adoptium.net/temurin/releases/?version=17" target="_blank">Java 17</a></li>
+          <li>下载 <a href="https://files.minecraftforge.net/net/minecraftforge/forge/index_1.20.1.html" target="_blank">Forge 1.20.1</a></li>
+          <li>运行安装器 → 选择 "Install client"</li>
+          <li>启动 Minecraft → 选择 Forge 配置文件</li>
+          <li>多人游戏 → 添加服务器 → 输入地址</li>
+        </ol>
+        <p style="color:#ff8a80; margin-top:15px; font-weight:bold;">
+          ⚠️ 未安装 Forge 将无法进入！
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      © 2026 SimpFun Minecraft Server | Made with ❤️ for the community
+    </footer>
+  </div>
+
+  <script>
+    // ===== 选项卡 =====
+    function openTab(tabName) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabName).classList.add('active');
+      event.target.classList.add('active');
+
+      // 如果切换到公告页，加载公告
+      if (tabName === 'news' && !window.announcementsLoaded) {
+        loadAnnouncements();
+      }
+    }
+
+    // ===== 加载公告 =====
+    async function loadAnnouncements() {
+      const container = document.getElementById('announcements-list');
+      try {
+        const response = await fetch('announcements.json?_=' + Date.now()); // 防缓存
+        if (!response.ok) throw new Error('未找到公告文件');
+        const announcements = await response.json();
+        if (!Array.isArray(announcements) || announcements.length === 0) {
+          container.innerHTML = '<div class="loading-state">暂无公告</div>';
+          return;
+        }
+
+        // 按日期倒序（最新在前）
+        announcements.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        let html = '';
+        announcements.forEach(item => {
+          html += `
+            <div class="announcement">
+              <div class="announcement-title">
+                <span>${item.title}</span>
+                <span class="announcement-date">${formatDate(item.date)}</span>
+              </div>
+              <div class="announcement-content">${item.content.replace(/\n/g, '<br>')}</div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+        window.announcementsLoaded = true;
+      } catch (error) {
+        console.error('加载公告失败:', error);
+        container.innerHTML = `<div class="loading-state">⚠️ 加载失败<br>请稍后重试</div>`;
+      }
+    }
+
+    // 格式化日期：2026-02-05 → 2026年2月5日
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      return `${year}年${month}月${day}日`;
+    }
+
+    // ===== 复制地址 =====
+    function copyAddress() {
+      navigator.clipboard.writeText('play.simpfun.cn:23851').then(() => {
+        const btn = document.querySelector('.join-btn');
+        const original = btn.textContent;
+        btn.textContent = '✅ 已复制！';
+        setTimeout(() => btn.textContent = original, 2000);
+      });
+    }
+
+    // ===== 服务器状态 =====
+    async function updateStatus() {
+      try {
+        const res = await fetch('https://api.mcsrvstat.us/3/play.simpfun.cn:23851');
+        const data = await res.json();
+        const playersEl = document.getElementById('players');
+        const statusEl = document.getElementById('status');
+        if (data.online) {
+          playersEl.textContent = `${data.players.online} / ${data.players.max}`;
+          statusEl.innerHTML = '<span style="color:#a5d6a7">🟢 在线</span>';
+        } else {
+          playersEl.textContent = '0 / ?';
+          statusEl.innerHTML = '<span style="color:#ff8a80">🔴 离线</span>';
+        }
+      } catch (e) {
+        document.getElementById('players').textContent = 'ERROR';
+        document.getElementById('status').innerHTML = '<span style="color:#ffb300">⚠️ 查询失败</span>';
+      }
+    }
+    updateStatus();
+    setInterval(updateStatus, 30000);
+  </script>
+</body>
+</html>
